@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="small_aircraft">img/aircraft/small_aircraft.png</file>
+        <file alias="background1">img/background/background1.png</file>
+        <file alias="airport1">img/airport/airport1.png</file>
+        <file alias="explosion1">img/effects/explosion.gif</file>
+    </qresource>
+</RCC>

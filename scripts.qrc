@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>aircraft.js</file>
+        <file>wefly.js</file>
+        <file>util.js</file>
+    </qresource>
+</RCC>
