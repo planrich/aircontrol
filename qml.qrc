@@ -1,11 +1,13 @@
 <RCC>
     <qresource prefix="/">
-        <file>Wefly.qml</file>
-        <file>Menu.qml</file>
         <file>Checkpoint.qml</file>
         <file>Airport.qml</file>
         <file>Aircraft.qml</file>
         <file>Button.qml</file>
         <file>Explosion.qml</file>
+        <file>GameOver.qml</file>
+        <file>Main.qml</file>
+        <file>Game.qml</file>
+        <file>Menu.qml</file>
     </qresource>
 </RCC>

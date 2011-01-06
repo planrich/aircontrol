@@ -18,3 +18,12 @@ function distance(x1,y1,x2,y2)
 
     return Math.sqrt(x*x + y*y);
 }
+
+/**
+ * Returns a random between a minimum and a maximum value
+ */
+function random(min, max) {
+    var tmp = max - min;
+    return Math.round(Math.random() * tmp + min);
+}
+

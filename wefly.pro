@@ -18,16 +18,19 @@ INSTALLS=target
 SOURCES += main.cpp
 
 OTHER_FILES += \
-    Wefly.qml \
+    Game.qml \
     Aircraft.qml \
     Checkpoint.qml \
     Airport.qml \
     Menu.qml \
-    wefly.js \
+    game.js \
     aircraft.js \
     Button.qml \
     util.js \
-    Explosion.qml
+    Explosion.qml \
+    GameOver.qml \
+    Main.qml \
+    main.js
 
 
 RESOURCES += \

@@ -6,18 +6,16 @@ Image {
     id: aircraft
     source: {
         if (type == 0) {
-            "qrc:/small_aircraft"
+            "small_aircraft"
         }
     }
-    fillMode: Image.PreserveAspectFit
-
     width: 52; height: 52
     smooth: true
 
     property int type: 0
     property bool crashed: false
     property bool landing: false
-    property real speed: 2.0
+    property real speed: 1.0
 
     property real landingRotation: 0
     property real landingEndX: 0
@@ -56,17 +54,22 @@ Image {
         Logic.createCheckpoint(x,y);
     }
 
+    function stop() {
+        if (moveanim.running) {
+            moveanim.stop();
+        }
+    }
+
     function pause() {
-        moveanim.stop();
-        moveanim.run = false;
+        moveanim.pause();
     }
 
-    onXChanged: {
-        Logic.clamp(x,y);
-    }
-
-    onYChanged: {
-        Logic.clamp(x,y);
+    function resume() {
+        if (moveanim.paused) {
+            moveanim.resume();
+        } else {
+            Logic.updateFlightPath(aircraft.rotation);
+        }
     }
 
     RotationAnimation {
@@ -76,28 +79,22 @@ Image {
         duration: 100
         direction: RotationAnimation.Shortest
     }
+
     ParallelAnimation {
         id: moveanim
-        alwaysRunToEnd: false
-        property bool run: true
 
-
-        PropertyAnimation {
+        NumberAnimation {
             id: xanim
             target: aircraft
             property: "x"
         }
-        PropertyAnimation {
+        NumberAnimation {
             id: yanim
             target: aircraft
             property: "y"
         }
 
-        onCompleted: {
-            if (run) {
-                Logic.headForNextCheckpoint();
-            }
-        }
+        onCompleted: { Logic.headForNextCheckpoint(); }
     }
 
     states: [

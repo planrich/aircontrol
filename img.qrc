@@ -4,5 +4,12 @@
         <file alias="background1">img/background/background1.png</file>
         <file alias="airport1">img/airport/airport1.png</file>
         <file alias="explosion1">img/effects/explosion.gif</file>
+        <file alias="quit">img/quit.png</file>
+        <file alias="pause">img/pause.png</file>
+        <file alias="play">img/play.png</file>
+        <file alias="settings">img/settings.png</file>
+        <file alias="speed">img/speed.png</file>
+        <file alias="speed2">img/speed2.png</file>
+        <file alias="scores">img/scores.png</file>
     </qresource>
 </RCC>

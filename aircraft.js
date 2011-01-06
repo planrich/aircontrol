@@ -44,9 +44,9 @@ function updateControl(x,y) {
             createCheckpoint(x,y);
         }
     } else { //first checkpoint we head for it
-        if (distance(x,y,aircraft.x + aircraft.width / 2,aircraft.y + aircraft.height / 2) > 20) {
-
+        if (distance(x,y,aircraft.x + aircraft.width / 2,aircraft.y + aircraft.height / 2) > aircraft.height / 2) {
             var cp = createCheckpoint(x,y);
+
             headfor(cp);
         }
     }
@@ -66,10 +66,10 @@ function updateFlightPath(deg)
     var tox = aircraft.x + aircraft.width / 2 + vector_x;
     var toy = aircraft.y + aircraft.height / 2 + vector_y;
 
-    var fly_distance = distance(aircraft.x + aircraft.width / 2 ,aircraft.y + aircraft.height / 2,tox,toy);
+    var fly_distance = distance(aircraft.getCenterX(), aircraft.getCenterY(),tox,toy);
 
-    xanim.duration = fly_distance * 15;
-    yanim.duration = fly_distance * 15;
+    xanim.duration = fly_distance * 25 * aircraft.speed;
+    yanim.duration = fly_distance * 25 * aircraft.speed;
 
     xanim.to = tox - aircraft.width / 2;
     yanim.to = toy - aircraft.height / 2;
@@ -84,7 +84,7 @@ function clamp(x,y)
 
     if (!Util.isin(x,y,window.x-w,window.y-h,window.width,window.height)) {
 
-        moveanim.pause();
+        moveanim.stop();
 
         if (x < -h)
         {
@@ -111,8 +111,6 @@ function clamp(x,y)
 
 function headForNextCheckpoint() {
 
-    //console.debug("seeking for next checkpoint");
-
     if (checkpoints.length > 0) {
         var curr_cp = checkpoints.shift();
 
@@ -125,22 +123,23 @@ function headForNextCheckpoint() {
     }
 
     if (checkpoints.length > 0) {
-
         checkpoint = checkpoints[0];
         headfor(checkpoint);
     } else {
-        //console.debug("no more checkpoints we fly straigth again");
         updateFlightPath(aircraft.rotation);
     }
 }
 
+/**
+ * Calculate distance and rotation to the next checkpoint. Then rotate and start animation
+ */
 function headfor(checkpoint)
 {    
     var v_1_x = 0;
     var v_1_y = 1;
 
-    var v_2_x = (aircraft.x + aircraft.width / 2) - checkpoint.getCenterX();
-    var v_2_y = (aircraft.y + aircraft.height / 2) - checkpoint.getCenterY();
+    var v_2_x = aircraft.getCenterX() - checkpoint.getCenterX();
+    var v_2_y = aircraft.getCenterY() - checkpoint.getCenterY();
 
     var rad = calculateAngle(v_1_x,v_1_y,v_2_x,v_2_y);
 
@@ -150,12 +149,10 @@ function headfor(checkpoint)
         aircraft.rotate(rad * (180 / Math.PI));
     }
 
-    //console.log("rotation is " + rad * 180 / Math.PI);
+    var fly_distance = distance(aircraft.getCenterX(), aircraft.getCenterY(),checkpoint.getCenterX(),checkpoint.getCenterY());
 
-    var fly_distance = distance(aircraft.x + aircraft.width / 2, aircraft.y + aircraft.height / 2,checkpoint.getCenterX(),checkpoint.getCenterY());
-
-    xanim.duration = fly_distance * 15;
-    yanim.duration = fly_distance * 15;
+    xanim.duration = fly_distance * 25 * aircraft.speed;
+    yanim.duration = fly_distance * 25 * aircraft.speed;
     xanim.to = checkpoint.getCenterX() - aircraft.width / 2;
     yanim.to = checkpoint.getCenterY() - aircraft.height / 2;
 

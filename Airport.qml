@@ -3,11 +3,7 @@ import Qt 4.7
 import "util.js" as Util
 
 Image {
-    source: {
-        if (type == 1) {
-            "airport" + type
-        }
-    }
+    source: "airport" + type
 
     property int type: 1
 
