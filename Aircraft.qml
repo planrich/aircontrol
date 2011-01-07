@@ -9,17 +9,16 @@ Image {
             "small_aircraft"
         }
     }
-    width: 52; height: 52
     smooth: true
 
     property int type: 0
     property bool crashed: false
     property bool landing: false
-    property real speed: 1.0
 
-    property real landingRotation: 0
-    property real landingEndX: 0
-    property real landingEndY: 0
+    property real dragX: 0
+    property real dragY: 0
+
+    property variant landingParams: null;
 
     function getCenterX() {
         return x + width / 2;
@@ -34,6 +33,10 @@ Image {
         rotanim.start();
     }
 
+    function clearCheckpoints() {
+        Logic.clearCheckpoints();
+    }
+
     function updateFlightPath(angle) {
         Logic.updateFlightPath(angle);
     }
@@ -46,23 +49,16 @@ Image {
         Logic.updateControl(x,y);
     }
 
-    function clearCheckpoints() {
-        Logic.clearCheckpoints();
-    }
-
-    function createCheckpoint(x,y) {
-        Logic.createCheckpoint(x,y);
-    }
-
-    function stop() {
-        if (moveanim.running) {
-            moveanim.stop();
-        }
-    }
-
     function pause() {
         moveanim.pause();
     }
+
+    function speedChanged() {
+        Logic.speedChanged();
+    }
+
+    onXChanged: Logic.clamp(x,y);
+    onYChanged: Logic.clamp(x,y);
 
     function resume() {
         if (moveanim.paused) {
@@ -82,20 +78,27 @@ Image {
 
     ParallelAnimation {
         id: moveanim
+        onCompleted: {
+            if (landing != true) {
+                Logic.headForNextCheckpoint();
+            }
+        }
 
-        NumberAnimation {
+       PropertyAnimation {
             id: xanim
+            alwaysRunToEnd: false
             target: aircraft
             property: "x"
         }
-        NumberAnimation {
+        PropertyAnimation {
             id: yanim
+            alwaysRunToEnd: false
             target: aircraft
             property: "y"
         }
-
-        onCompleted: { Logic.headForNextCheckpoint(); }
     }
+
+
 
     states: [
          State {
@@ -108,17 +111,28 @@ Image {
              }
          },
          State {
-             name: "Landing"; when: landing == true
+             name: "landing"; when: landing == true
              StateChangeScript {
                  script: {
                      Logic.clearCheckpoints();
-                     gameCanvas.removePlane(aircraft);
-                     aircraft.destroy(100);
-                     scoreCounter.score += 1;
+                     moveanim.stop();
+                     window.score += 1;
+                     aircraft.destroy(landingParams[3] + 500);
                  }
              }
          }
      ]
 
+    transitions: [
+         Transition {
+             to: "landing"
+             ParallelAnimation {
+                 NumberAnimation { target: aircraft; property: "scale"; to: 0.5; duration: 500 }
+                 NumberAnimation { target: aircraft; property: "x"; to: landingParams[1] - aircraft.width / 2; duration: landingParams[3] }
+                 NumberAnimation { target: aircraft; property: "y"; to: landingParams[2] - aircraft.height / 2; duration: landingParams[3] }
+                 RotationAnimation { target: aircraft; property: "rotation"; to: landingParams[0] }
+             }
+         }
+     ]
 
 }

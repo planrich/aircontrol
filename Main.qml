@@ -1,14 +1,14 @@
 import Qt 4.7
 
-import "main.js" as Main
-
 Rectangle {
     id: window
-    width: 1252; height: 768
+    width: 1366; height: 768
     focus: true; Keys.onEscapePressed: Qt.quit();
 
-    property real speed: 1
+    property real gamespeed: 1
     property int score: 0
+    property bool inGame: false
+
 
     SystemPalette { id: activePalette }
 
@@ -22,6 +22,7 @@ Rectangle {
             GradientStop { position: 0.0; color: "gray" }
             GradientStop { position: 1.0; color: "silver" }
         }
+        z: 20
 
         Image {
             id: playpause
@@ -65,16 +66,23 @@ Rectangle {
             anchors.left: settings.right
             anchors.top: toolbar.top
             anchors.margins: 5
-            source: {
-                if (window.speed == 1) {
-                    "speed"
-                } else {
-                    "speed2"
-                }
-            }
+            source: "speed"
 
             MouseArea {
                 anchors.fill: parent
+                onClicked: {
+                    if (inGame) {
+                        if (gamespeed == 1) {
+                            gamespeed = 3;
+                            speed.source = "speed2";
+                        } else {
+                            gamespeed = 1;
+                            speed.source = "speed";
+                        }
+
+                        game.speedChanged();
+                    }
+                }
             }
         }
 
@@ -118,10 +126,12 @@ Rectangle {
         }
     }
 
-    Item {
-        id: canvas
+    Game {
+        id: game
         anchors.top: toolbar.bottom
-        width: parent.width; height: parent.height
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
     }
 
     Rectangle {
@@ -129,28 +139,22 @@ Rectangle {
         anchors.top: toolbar.bottom
         width: parent.width; height: parent.height
         color: "black"
-        opacity: 0.8
+        opacity: 0.6
         z: 1
     }
 
     states: [
         State {
-            name: "menu"
-        },
-        State {
-            name: "settings"
-        },
-        State {
-            name: "play"
+            name: "play"; when: inGame == true
             StateChangeScript {
                 script: {
-                    Main.resume();
+                    if (inGame) {
+                        game.resume();
+                    } else {
+                        inGame = true;
+                        game.newGame();
+                    }
                 }
-            }
-            PropertyChanges {
-                target: window
-                width: 1366
-                height: 768
             }
             PropertyChanges {
                 target: pauseFog
@@ -158,32 +162,12 @@ Rectangle {
             }
         },
         State {
-            name: "pause"
+            name: "pause"; when: inGame == false
             StateChangeScript {
                 script: {
-                    Main.pause();
+                    game.pause();
                 }
-            }
-            PropertyChanges {
-                target: window
-                width: 1252
-                height: 768
-            }
-            PropertyChanges {
-                target: pauseFog
-                opacity: 0.8
             }
         }
     ]
-
-    transitions: [
-        Transition { PropertyAnimation { properties: "width,height" } },
-        Transition { PropertyAnimation { property: "opacity" } }
-    ]
-
-
-
-    function pause() {
-
-    }
 }

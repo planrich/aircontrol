@@ -21,8 +21,7 @@ OTHER_FILES += \
     Game.qml \
     Aircraft.qml \
     Checkpoint.qml \
-    Airport.qml \
-    Menu.qml \
+    airport/Airport1.qml \
     game.js \
     aircraft.js \
     Button.qml \
@@ -30,7 +29,8 @@ OTHER_FILES += \
     Explosion.qml \
     GameOver.qml \
     Main.qml \
-    main.js
+    main.js \
+    airport/Airstrip.qml
 
 
 RESOURCES += \

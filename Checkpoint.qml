@@ -9,7 +9,6 @@ Rectangle {
 
     property bool landing: false
 
-
     function getCenterX() {
         return x + width / 2;
     }

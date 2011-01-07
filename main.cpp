@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     view.setWindowFlags(Qt::FramelessWindowHint);
     view.setSource(QUrl("qrc:/Main.qml"));
     // OpenGL rendering of QML may be slow on some platforms
-    //view.setViewport(new QGLWidget);
+    view.setViewport(new QGLWidget);
     app.connect(view.engine(), SIGNAL(quit()),
                 &view, SLOT(close()));
     view.show();
