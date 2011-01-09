@@ -30,7 +30,8 @@ OTHER_FILES += \
     GameOver.qml \
     Main.qml \
     main.js \
-    airport/Airstrip.qml
+    airport/Airstrip.qml \
+    airport/Airport2.qml
 
 
 RESOURCES += \

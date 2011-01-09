@@ -1,10 +1,7 @@
 import Qt 4.7
 import "../util.js" as Util
 
-Rectangle {
-
-    color: "green"
-
+Item {
     id: component
     width: 40
     height: 40

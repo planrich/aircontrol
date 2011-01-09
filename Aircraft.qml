@@ -130,7 +130,7 @@ Image {
                  NumberAnimation { target: aircraft; property: "scale"; to: 0.5; duration: 500 }
                  NumberAnimation { target: aircraft; property: "x"; to: landingParams[1] - aircraft.width / 2; duration: landingParams[3] }
                  NumberAnimation { target: aircraft; property: "y"; to: landingParams[2] - aircraft.height / 2; duration: landingParams[3] }
-                 RotationAnimation { target: aircraft; property: "rotation"; to: landingParams[0] }
+                 RotationAnimation { target: aircraft; property: "rotation"; to: landingParams[0]; direction: RotationAnimation.Shortest }
              }
          }
      ]

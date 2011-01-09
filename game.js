@@ -15,8 +15,6 @@ function newGame() {
 
     controlled = null;
 
-    createAirport();
-
     var len = planes.length;
     while (len > 0) {
         var plane = planes.pop();
@@ -37,8 +35,11 @@ function createAirport() {
     }
 
     //create new airport
-    var airportBuilder = Qt.createComponent("Airport" + Math.floor(1 + Math.random() * 1) + ".qml");
+    var airportBuilder = Qt.createComponent("Airport" + Util.random(1,2) + ".qml");
     airport = airportBuilder.createObject(airportLayer);
+
+    airport.x = Util.random(300,700);
+    airport.y = Util.random(100,400);
 }
 
 function pause() {

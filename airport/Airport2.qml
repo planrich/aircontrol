@@ -1,7 +1,7 @@
 import Qt 4.7
 
 Image {
-    source: "airport1"
+    source: "airport2"
 
     property int type: 0
 
@@ -18,18 +18,18 @@ Image {
     Airstrip {
         id: airstrip1
         x: 10
-        y: 17
+        y: 138
         type: 0
         landingRotation: 90
-        landingWidth: 320
+        landingWidth: 300
     }
 
     Airstrip {
         id: airstrip2
-        x: 10
-        y: 72
+        x: 88
+        y: 290
         type: 0
-        landingRotation: 90
-        landingWidth: 320
+        landingRotation: 0
+        landingWidth: 280
     }
 }

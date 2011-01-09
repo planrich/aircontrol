@@ -55,10 +55,7 @@ Rectangle {
             anchors.top: toolbar.top
             anchors.margins: 5
             source: "settings"
-
-            MouseArea {
-                anchors.fill: parent
-            }
+            opacity: 0.2
         }
 
         Image {
@@ -92,10 +89,7 @@ Rectangle {
             anchors.top: toolbar.top
             anchors.margins: 5
             source: "scores"
-
-            MouseArea {
-                anchors.fill: parent
-            }
+            opacity: 0.2
         }
 
         Text {
@@ -139,7 +133,7 @@ Rectangle {
         anchors.top: toolbar.bottom
         width: parent.width; height: parent.height
         color: "black"
-        opacity: 0.6
+        opacity: 0.5
         z: 1
     }
 
