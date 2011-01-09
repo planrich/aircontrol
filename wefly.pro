@@ -31,7 +31,8 @@ OTHER_FILES += \
     Main.qml \
     main.js \
     airport/Airstrip.qml \
-    airport/Airport2.qml
+    airport/Airport2.qml \
+    info/Info.qml
 
 
 RESOURCES += \

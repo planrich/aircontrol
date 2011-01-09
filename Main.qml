@@ -1,4 +1,5 @@
 import Qt 4.7
+import "main.js" as Logic
 
 Rectangle {
     id: window
@@ -8,7 +9,10 @@ Rectangle {
     property real gamespeed: 1
     property int score: 0
     property bool inGame: false
+    property bool displayInfo: false
 
+    property string buildState: "alpha"
+    property int rev: 2
 
     SystemPalette { id: activePalette }
 
@@ -92,9 +96,24 @@ Rectangle {
             opacity: 0.2
         }
 
+        Image {
+            id: infoButton
+            anchors.left: scores.right
+            anchors.top: toolbar.top
+            anchors.margins: 5
+            source: "info"
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    Logic.info();
+                }
+            }
+        }
+
         Text {
             id: scoreText
-            anchors.left: scores.right; anchors.leftMargin: 50
+            anchors.left: infoButton.right; anchors.leftMargin: 50
             anchors.top: toolbar.top
             text: window.score
             font.pointSize: 22
@@ -126,6 +145,12 @@ Rectangle {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
+    }
+
+    Item {
+        id: infoWindow
+        z: 20
+        anchors.centerIn: parent
     }
 
     Rectangle {

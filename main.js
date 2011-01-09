@@ -1,18 +1,14 @@
-var gameBuilder = Qt.createComponent("Game.qml");
-var game;
+var informationWindow;
 
-//show the game, and create it if it does not exist
-function resume() {
-    if (game == null) {
-        game = gameBuilder.createObject(canvas);
+function info() {
+    if (informationWindow == null) {
+        var infoBuilder = Qt.createComponent("Info.qml");
+        informationWindow = infoBuilder.createObject(infoWindow);
     } else {
-        game.resume();
+        informationWindow.visible = !informationWindow.visible;
     }
-}
 
-//pause
-function pause() {
-    if (game != null) {
-        game.pause();
+    if (informationWindow.visible) {
+        informationWindow.show();
     }
 }

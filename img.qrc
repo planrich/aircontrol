@@ -12,5 +12,6 @@
         <file alias="scores">img/scores.png</file>
         <file alias="background1">img/background/background1.jpg</file>
         <file alias="airport2">img/airport/airport2.png</file>
+        <file alias="info">img/info.png</file>
     </qresource>
 </RCC>

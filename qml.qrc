@@ -10,5 +10,6 @@
         <file alias="Airport1.qml">airport/Airport1.qml</file>
         <file alias="Airstrip.qml">airport/Airstrip.qml</file>
         <file alias="Airport2.qml">airport/Airport2.qml</file>
+        <file alias="Info.qml">info/Info.qml</file>
     </qresource>
 </RCC>

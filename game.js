@@ -39,7 +39,7 @@ function createAirport() {
     airport = airportBuilder.createObject(airportLayer);
 
     airport.x = Util.random(300,700);
-    airport.y = Util.random(100,400);
+    airport.y = Util.random(50,150);
 }
 
 function pause() {
