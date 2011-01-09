@@ -28,16 +28,21 @@ Rectangle {
         }
         z: 20
 
-        Image {
+
+        Item {
             id: playpause
             anchors.left: toolbar.left
             anchors.top: toolbar.top
-            anchors.margins: 5
-            source: {
-                if (window.state == "play") {
-                    "pause"
-                } else {
-                    "play"
+            width: 35
+            height: 35
+            Image {
+                anchors.centerIn: parent
+                source: {
+                    if (window.state == "play") {
+                        "pause"
+                    } else {
+                        "play"
+                    }
                 }
             }
 
@@ -53,21 +58,35 @@ Rectangle {
             }
         }
 
-        Image {
+        Item {
             id: settings
             anchors.left: playpause.right
             anchors.top: toolbar.top
-            anchors.margins: 5
-            source: "settings"
-            opacity: 0.2
+            width: 35
+            height: 35
+            Image {
+                anchors.centerIn: parent
+                source: "settings"
+                opacity: 0.2
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {} //not yet
+            }
         }
 
-        Image {
+        Item {
             id: speed
             anchors.left: settings.right
             anchors.top: toolbar.top
-            anchors.margins: 5
-            source: "speed"
+            width: 35
+            height: 35
+            Image {
+                id: speedimg
+                anchors.centerIn: parent
+                source: "speed"
+            }
 
             MouseArea {
                 anchors.fill: parent
@@ -75,10 +94,10 @@ Rectangle {
                     if (inGame) {
                         if (gamespeed == 1) {
                             gamespeed = 3;
-                            speed.source = "speed2";
+                            speedimg.source = "speed2";
                         } else {
                             gamespeed = 1;
-                            speed.source = "speed";
+                            speedimg.source = "speed";
                         }
 
                         game.speedChanged();
@@ -87,21 +106,36 @@ Rectangle {
             }
         }
 
-        Image {
+        Item {
             id: scores
             anchors.left: speed.right
             anchors.top: toolbar.top
-            anchors.margins: 5
-            source: "scores"
-            opacity: 0.2
+            width: 35
+            height: 35
+            Image {
+                anchors.centerIn: parent
+                source: "scores"
+                opacity: 0.2
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {} //not yet
+            }
         }
 
-        Image {
+
+
+        Item {
             id: infoButton
             anchors.left: scores.right
             anchors.top: toolbar.top
-            anchors.margins: 5
-            source: "info"
+            width: 35
+            height: 35
+            Image {
+                anchors.centerIn: parent
+                source: "info"
+            }
 
             MouseArea {
                 anchors.fill: parent
@@ -127,11 +161,18 @@ Rectangle {
             font.pointSize: 15
         }
 
-        Image {
+        Item {
+            id:quitbutton
+            width: 35
+            height: 35
             anchors.right: toolbar.right
             anchors.top: toolbar.top
-            anchors.margins: 5
-            source: "quit"
+
+            Image {
+                anchors.centerIn: parent
+                source: "quit"
+            }
+
             MouseArea {
                 anchors.fill: parent
                 onClicked: Qt.quit();

@@ -6,7 +6,7 @@
 
 QT += core gui declarative opengl
 
-TARGET = wefly
+TARGET = aircontrol
 CONFIG += console
 CONFIG -= app_bundle
 

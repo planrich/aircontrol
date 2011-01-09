@@ -70,7 +70,7 @@ Rectangle {
 
     Text {
         id: programmer
-        font.pointSize: 10
+        font.pointSize: 8
         color: "black"
         text: "software engineer-in-training";
         anchors.bottom: programmerTitle.bottom;
@@ -117,7 +117,6 @@ Rectangle {
                     property: "scale"
                     to: 1.1
                     duration: 175
-                    easing: Easing.InOutQuad
                 }
                 PropertyAnimation {
                     target: container

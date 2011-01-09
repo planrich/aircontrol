@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     QDeclarativeView view;
-    view.setWindowTitle(QObject::tr("appname"));
+    view.setWindowTitle(QObject::tr("Aircontrol"));
     view.setWindowFlags(Qt::FramelessWindowHint);
     view.setSource(QUrl("qrc:/Main.qml"));
     // OpenGL rendering of QML may be slow on some platforms
