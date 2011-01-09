@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ttapp xmlns="http://www.tiitoo.com/SDK/v1">
+    <version>1.0.0</version>
+
+    <name>Aircontrol</name>
+    <displayName lang="DE">Luftkontrolle</displayName>
+    <shortDescription lang="DE">Lande Flugzeuge ohne sie kollidieren zu lassen</shortDescription>
+    <description lang="DE">In diesen Spiel müssen Flugzeuge auf den Flughafen landen und dabei versuchen, keines davon mit einem anderem kollidieren zu lassen!</description>
+
+    <displayName lang="EN">Aircontrol</displayName>
+    <shortDescription lang="DE">Land aircrafts without crashing them</shortDescription>
+    <description lang="DE">In this game you should land any kind auf aircraft and try not to crash them. The more score you get the better!</description>
+
+    <category>3</category> <!-- what is category? -->
+    <state>ALPHA</state>
+    <sdkVersion>1.0</sdkVersion>  <!-- is it sdkMaxVersion or sdkVerion? widget-metadata.png also not quite sure -->
+    <providesList>
+        <provides type="rpm" name="com.planrich.aircontrol" />
+    </providesList>
+    <icon>img/icon.png</icon>
+    <widgetSize>SMALL</widgetSize>
+    <screenshots>
+        <screenshot>img/screenshot/screenshot1.png</screenshot>
+    </screenshots>
+    <price>000</price>
+</ttapp>

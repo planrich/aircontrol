@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Aircraft
+Name[de]=Luftkontrolle
+Icon=img/icon.png
+Exec=/usr/bin/aircontrol
+X-tiitoo-permanent=false 
