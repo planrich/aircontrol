@@ -46,11 +46,11 @@ function updateControl(x,y) {
     } else if (checkpoints.length > 0) { //we append if len is appropriet
         var last_cp = checkpoints[checkpoints.length - 1];
 
-        if (Util.distance(x,y,last_cp.x,last_cp.y) > 20) {
+        if (Util.distance(x,y,last_cp.x,last_cp.y) > 25) {
             createCheckpoint(x,y);
         }
     } else { //first checkpoint we head for it
-        if (Util.distance(x,y,aircraft.getCenterX(),aircraft.getCenterY()) > 25) {
+        if (Util.distance(x,y,aircraft.getCenterX(),aircraft.getCenterY()) > 50) {
             var cp = createCheckpoint(x,y);
         }
     }
@@ -69,8 +69,8 @@ function updateFlightPath(deg)
     var vector_x = Math.sin(rad);
     var vector_y = -Math.cos(rad);
 
-    var tox = aircraft.x + aircraft.width / 2 + vector_x;
-    var toy = aircraft.y + aircraft.height / 2 + vector_y;
+    var tox = aircraft.getCenterX() + vector_x * 10;
+    var toy = aircraft.getCenterY() + vector_y * 10;
 
     var fly_distance = Util.distance(aircraft.getCenterX(), aircraft.getCenterY(),tox,toy);
 
@@ -78,45 +78,41 @@ function updateFlightPath(deg)
 }
 
 function flyto(tox,toy,duration) {
-    xanim.duration = duration / window.gamespeed;
-    yanim.duration = duration / window.gamespeed;
-    xanim.to = tox
-    yanim.to = toy
+    xanim.duration = Math.round(duration / window.gamespeed);
+    yanim.duration = Math.round(duration / window.gamespeed);
+    xanim.to = tox;
+    yanim.to = toy;
 
     if (!moveanim.running) {
         moveanim.start();
     }
 }
 
-function clamp(x,y)
+function clampX(changedX)
 {
-    var w = aircraft.width;
-    var h = aircraft.height;
-
-    if (!Util.isin(x,y,window.x-w,window.y-h,window.width,window.height)) {
-
+    //did we move out of the rectangle
+    if (changedX < -aircraft.width) {
         moveanim.stop();
+        aircraft.x = window.width;
+        aircraft.updateFlightPath(aircraft.rotation);
+    } else if (changedX > window.width) {
+        moveanim.stop();
+        aircraft.x = -aircraft.width;
+        aircraft.updateFlightPath(aircraft.rotation);
+    }
+}
 
-        if (x < -h)
-        {
-            x = window.width;
-        }
-        else if (y < -w)
-        {
-            y = window.height;
-        }
-        else if (x > window.width)
-        {
-            x = -w;
-        }
-        else if (y > window.height)
-        {
-            y = -h;
-        }
-
-        aircraft.x = x;
-        aircraft.y = y;
-        updateFlightPath(aircraft.rotation);
+function clampY(changedY)
+{
+    //did we move out of the rectangle
+    if (changedY < -aircraft.height) {
+        moveanim.stop();
+        aircraft.y = window.height;
+        aircraft.updateFlightPath(aircraft.rotation);
+    } else if (changedY > window.height) {
+        moveanim.stop();
+        aircraft.y = -aircraft.height;
+        aircraft.updateFlightPath(aircraft.rotation);
     }
 }
 
@@ -137,6 +133,9 @@ function headForNextCheckpoint() {
             curr_cp.destroy();
         }
     }
+
+    clampX(aircraft.x);
+    clampY(aircraft.y);
 
     if (checkpoints.length > 0) {
         checkpoint = checkpoints[0];

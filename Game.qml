@@ -1,4 +1,5 @@
 import Qt 4.7
+import com.planrich.aircontrol 1.0
 import "game.js" as Logic
 import "util.js" as Util
 
@@ -12,9 +13,11 @@ Image {
     Component.onCompleted: Logic.createAirport();
 
     property int type: 1
-    property int maxAircrafts: 2
+    property int maxAircrafts: 3
     property int spawnInterval: 3800
     property real spawnChance: .25
+    property int spawnIntervalMod: 0
+
 
     Item {
         id: airportLayer
@@ -35,6 +38,10 @@ Image {
         onPositionChanged: Logic.updateControl(mouseX,mouseY);
     }
 
+    Random {
+        id: rand
+    }
+
     Timer {
         id: crashchecker
         interval: 125
@@ -44,7 +51,7 @@ Image {
 
     Timer {
         id: spawner
-        interval: spawnInterval / window.gamespeed
+        interval: (spawnInterval - spawnIntervalMod) / window.gamespeed
         repeat: true
         onTriggered: Logic.spawn(spawnChance);
     }
@@ -80,5 +87,13 @@ Image {
 
     function resume() {
         Logic.resume();
+    }
+
+    function random() {
+        return rand.random();
+    }
+
+    function randomMinMax(min,max) {
+        return rand.randomMinMax(min,max);
     }
  }

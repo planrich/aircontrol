@@ -11,4 +11,6 @@ function info() {
     if (informationWindow.visible) {
         informationWindow.show();
     }
+
+
 }

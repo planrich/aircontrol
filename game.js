@@ -5,6 +5,7 @@ var planes = new Array();
 
 var controlled = null;
 var airport = null;
+var level = 0;
 
 /**
  * Clear all existing resources and a new start game
@@ -12,6 +13,7 @@ var airport = null;
 function newGame() {
 
     window.score = 0;
+    level = 0;
 
     controlled = null;
 
@@ -35,11 +37,11 @@ function createAirport() {
     }
 
     //create new airport
-    var airportBuilder = Qt.createComponent("Airport" + Util.random(1,2) + ".qml");
+    var airportBuilder = Qt.createComponent("Airport" + game.randomMinMax(1,2) + ".qml");
     airport = airportBuilder.createObject(airportLayer);
 
-    airport.x = Util.random(300,700);
-    airport.y = Util.random(50,150);
+    airport.x = game.randomMinMax(300,700);
+    airport.y = game.randomMinMax(50,150);
 }
 
 function pause() {
@@ -86,8 +88,8 @@ function createAircraft(type)
  */
 function spawn(chance)
 {
-    if (Math.random() < chance && planes.length < maxAircrafts) {
-        var plane = createAircraft(Math.floor(Math.random() * 1)); //type 0 for now
+    if (game.random() < chance && planes.length < maxAircrafts) {
+        var plane = createAircraft(Math.floor(game.random() * 1)); //type 0 for now
         var obj = randomSpawnPoint(plane.width,plane.height);
 
         plane.x = obj[0];
@@ -96,27 +98,27 @@ function spawn(chance)
         plane.updateFlightPath(obj[2]);
     }
 
-    if (Math.random() < 0.01) {
-        game.maxAircrafts += 1;
-        game.maxAircrafts = Math.min(game.maxAircrafts,25);
+    if (game.random() < 0.10) {
+        game.spawnIntervalMod += 10;
+        game.spawnIntervalMod = Math.max(game.spawnInterval, 750);
     }
 
-    if (Math.random() < 0.10) {
-        game.spawnInterval -= 10;
-        game.spawnInterval = Math.max(game.spawnInterval, 1000);
+    if (game.random() < 0.05) {
+        game.spawnChance += 0.02;
+        game.spawnChance = Math.min(game.spawnChance, 0.5);
     }
 
-    if (Math.random() < 0.02) {
-        game.spawnChance += 0.01;
-        game.spawnChance = Math.min(game.spawnChance, 0.4);
-    }
+    game.maxAircrafts = Math.round(window.score / 5);
+    game.maxAircrafts = Math.min(3, game.maxAircrafts);
+    game.maxAircrafts = Math.max(20, game.maxAircrafts);
+
 }
 
 /**
  * Generate a new aircraft and place it according to the params
  */
 function spawnat(x,y) {
-    var type = Math.floor(Math.random() * 1); //type 0 for now
+    var type = Math.floor(game.random() * 1); //type 0 for now
     var plane = createAircraft(type);
     plane.x = x;
     plane.y = y;
@@ -184,7 +186,7 @@ function explode(centerx,centery) {
  */
 function randomSpawnPoint(w,h)
 {
-    var side = Math.floor(Math.random() * 4); //0 top 1 right 2 bottom 3 left
+    var side = Math.floor(game.random() * 4); //0 top 1 right 2 bottom 3 left
 
     var x = 0;
     var y = 0;
@@ -192,23 +194,23 @@ function randomSpawnPoint(w,h)
 
     if (side == 0) {
         y = game.y - h;
-        x = Math.round(25 + Math.random() * (window.width + 50));
-        rot = Util.random(180 - 45, 180 + 45);
+        x = Math.round(25 + game.random() * (window.width + 50));
+        rot = game.randomMinMax(180 - 45, 180 + 45);
     }
     else if (side == 1) {
-        y = Math.round(25 + Math.random() * (window.height + 50));
+        y = Math.round(25 + game.random() * (window.height + 50));
         x = window.width;
-        rot = Util.random(270 - 45, 270 + 45);
+        rot = game.randomMinMax(270 - 45, 270 + 45);
     }
     else if (side == 2) {
         y = window.height - game.y;
-        x = Math.round(25 + Math.random() * (window.width + 50));
-        rot = Util.random(-45, 45);
+        x = Math.round(25 + game.random() * (window.width + 50));
+        rot = game.randomMinMax(-45, 45);
     }
     else if (side == 3) {
-        y = Math.round(25 + Math.random() * (window.height + 50));
+        y = Math.round(25 + game.random() * (window.height + 50));
         x = -w;
-        rot = Util.random(90 - 45, 90 + 45);
+        rot = game.randomMinMax(90 - 45, 90 + 45);
     }
 
     rot = rot % 360;
@@ -244,21 +246,10 @@ function getQuadrant(deg)
  */
 function control(x,y)
 {
-    controlled = null;
-
-    for (var i = 0; i < planes.length; i ++)
-    {
-        var plane = planes[i];
-        if (Util.isin(x,y,plane.x,plane.y,plane.width,plane.height)) {
-
-            controlled = plane;
-            controlled.startControl();
-
-            return true;
-        }
+    controlled = planeLayer.childAt(x,y);
+    if (controlled != null) {
+        controlled.clearCheckpoints();
     }
-
-    return false;
 }
 
 /**

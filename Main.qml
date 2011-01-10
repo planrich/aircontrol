@@ -12,7 +12,7 @@ Rectangle {
     property bool displayInfo: false
 
     property string buildState: "alpha"
-    property int rev: 2
+    property int rev: 3
 
     SystemPalette { id: activePalette }
 
@@ -27,7 +27,6 @@ Rectangle {
             GradientStop { position: 1.0; color: "silver" }
         }
         z: 20
-
 
         Item {
             id: playpause

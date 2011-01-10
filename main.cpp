@@ -3,18 +3,42 @@
 #include <QDeclarativeView>
 #include <QDeclarativeEngine>
 #include <QDeclarativeComponent>
+#include <QDeclarativeContext>
+#include <QDeclarativeItem>
+#include "src/random.h"
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    QDeclarativeView view;
+    qmlRegisterType<Random>("com.planrich.aircontrol",1,0,"Random");
+
+    QDeclarativeEngine engine;
+    QDeclarativeComponent mainComponent(&engine,QUrl("qrc:/Main.qml"));
+
+    QObject * obj = mainComponent.create();
+
+    QDeclarativeItem * item = qobject_cast<QDeclarativeItem*>(obj);
+
+    QGraphicsScene scene;
+    scene.setStickyFocus(true);
+    scene.setItemIndexMethod(QGraphicsScene::NoIndex);
+    QGraphicsView view(&scene);
+    view.setOptimizationFlags(QGraphicsView::DontSavePainterState);
+    view.setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+    view.viewport()->setFocusPolicy(Qt::NoFocus);
+    view.setFocusPolicy(Qt::StrongFocus);
     view.setWindowTitle(QObject::tr("Aircontrol"));
     view.setWindowFlags(Qt::FramelessWindowHint);
-    view.setSource(QUrl("qrc:/Main.qml"));
-    // OpenGL rendering of QML may be slow on some platforms
     view.setViewport(new QGLWidget);
-    app.connect(view.engine(), SIGNAL(quit()),
+
+    scene.addItem(item);
+
+    view.setGeometry(0,0,item->width(),item->height());
+    view.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    app.connect(&engine, SIGNAL(quit()),
                 &view, SLOT(close()));
     view.show();
 

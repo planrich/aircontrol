@@ -27,8 +27,6 @@ function random(min, max) {
     return Math.round(Math.random() * tmp + min);
 }
 
-
-
 /**
  * Calculate and return angle (radians) between two 2D vectors (x1/y1) and (x2/y2)
  */

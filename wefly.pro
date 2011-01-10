@@ -15,7 +15,8 @@ target.path=/usr/local/bin
 INSTALLS=target
 
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    src/random.cpp
 
 OTHER_FILES += \
     Game.qml \
@@ -40,4 +41,5 @@ RESOURCES += \
     qml.qrc \
     scripts.qrc
 
-HEADERS +=
+HEADERS += \
+    src/random.h

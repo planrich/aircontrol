@@ -57,9 +57,6 @@ Image {
         Logic.speedChanged();
     }
 
-    onXChanged: Logic.clamp(x,y);
-    onYChanged: Logic.clamp(x,y);
-
     function resume() {
         if (moveanim.paused) {
             moveanim.resume();
