@@ -1,8 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>aircraft.js</file>
-        <file>util.js</file>
-        <file>game.js</file>
-        <file>main.js</file>
-    </qresource>
-</RCC>
