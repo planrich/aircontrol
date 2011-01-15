@@ -48,7 +48,7 @@ Image {
 
     Timer {
         id: crashchecker
-        interval: 125
+        interval: 1000
         repeat: true
         onTriggered: Logic.checkCollisions();
     }

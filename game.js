@@ -287,7 +287,7 @@ function checkCollisions() {
                 continue;
             }
 
-            if (collchecker.collidate(p1.x,p1.y,p1.width,p1.height, p1.rotation,p2.x,p2.y,p2.width,p2.height, p2.rotation)) {
+            if (collchecker.collidate(p1.x,p1.y,p1.width,p1.height, p1.rotation * (Math.PI / 180),p2.x,p2.y,p2.width,p2.height, p2.rotation  * (Math.PI / 180))) {
                 crash(p1,p2);
                 return;
             }
