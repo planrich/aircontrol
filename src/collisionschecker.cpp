@@ -31,8 +31,10 @@ bool CollisionsChecker::collidate(float x, float y, float w, float h, float rot,
     plane2.apply();
 
     for (int i = 0; i < plane1.outline.size(); ++i) {
-        if (collide(*plane1.outline[i],*plane1.outline[i + 1],*plane2.outline[i],*plane2.outline[i + 1]))
-            return true;
+        for (int j = 0; j < plane2.outline.size(); ++j) {
+            if (collide(*plane1.outline[i],*plane1.outline[i + 1],*plane2.outline[j],*plane2.outline[j + 1]))
+                return true;
+        }
     }
 
     return false;
