@@ -90,7 +90,7 @@ function spawn(chance)
 {
      console.log("tick");
 
-    if (game.random() < chance && planes.length < maxAircrafts) {
+    if (game.random() < chance && planes.length < maxAircrafts || true == true) {
         var plane = createAircraft(2); //type 0 for now Math.floor(game.random() * 1)
         var obj = randomSpawnPoint(plane.width,plane.height);
 

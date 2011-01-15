@@ -13,22 +13,27 @@ bool CollisionsChecker::collidate(float x, float y, float w, float h, float rot,
     geomfig plane1;
     plane1.angle = rot;
     plane1.scale = 1;
-    plane1.prototype.push_back(new vec(x,y));
-    plane1.prototype.push_back(new vec(x + w,y));
-    plane1.prototype.push_back(new vec(x + w,y + h));
-    plane1.prototype.push_back(new vec(x,y + h));
-    plane1.pivot = vec(x + w / 2, y + h / 2);
+    plane1.prototype.push_back(new vec(-w / 2,-h / 2));
+    plane1.prototype.push_back(new vec(-w / 2, h / 2));
+    plane1.prototype.push_back(new vec(w / 2, h / 2));
+    plane1.prototype.push_back(new vec(w / 2, -h / 2));
+    plane1.pivot = vec(x,y);
     plane1.apply();
 
     geomfig plane2;
     plane2.angle = rot1;
     plane2.scale = 1;
-    plane2.prototype.push_back(new vec(x1,y1));
-    plane2.prototype.push_back(new vec(x1 + w1,y1));
-    plane2.prototype.push_back(new vec(x1 + w1,y1 + h1));
-    plane2.prototype.push_back(new vec(x1,y1 + h1));
-    plane2.pivot = vec(x1 + w1 / 2, y1 + h1 / 2);
+    plane2.prototype.push_back(new vec(-w1 / 2,-h1 / 2));
+    plane2.prototype.push_back(new vec(-w1 / 2, h1 / 2));
+    plane2.prototype.push_back(new vec(w1 / 2, h1 / 2));
+    plane2.prototype.push_back(new vec(w1 / 2, -h1 / 2));
+    plane2.pivot = vec(x1,y1);
     plane2.apply();
+
+    for (int i = 0; i < plane1.outline.size(); ++i) {
+        if (collide(*plane1.outline[i],*plane1.outline[i + 1],*plane2.outline[i],*plane2.outline[i + 1]))
+            return true;
+    }
 
     return false;
 }

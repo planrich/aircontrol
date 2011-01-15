@@ -95,16 +95,11 @@ struct geomfig {
 
 float lambda1 = 0;
 float lambda2 = 0;
-bool collide(vec& va, vec& vb, vec& vc, vec& vd, vec& vr) {
+bool collide(vec& va, vec& vb, vec& vc, vec& vd) {
         vec vab(vb.x-va.x,vb.y-va.y);
         vec vcd(vd.x-vc.x,vd.y-vc.y);
         lambda1 = -(vab.x*vc.y+(va.x-vc.x)*vab.y-vab.x*va.y)/(vab.x*vcd.y-vcd.x*vab.y);
         lambda2 = -(vcd.x*vc.y-vcd.y*vc.x+va.x*vcd.y-va.y*vcd.x)/(vab.x*vcd.y-vab.y*vcd.x);
-
-        float x = vc.x + lambda1 * (vcd.x);
-        float y = vc.y + lambda1 * (vcd.y);
-
-        vr = {x,y};
 
         return lambda1 >= 0 && lambda1 <= 1 && lambda2 >= 0 && lambda2 <= 1;
 }
