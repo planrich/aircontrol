@@ -16,7 +16,9 @@ INSTALLS=target
 
 
 SOURCES += main.cpp \
-    src/random.cpp
+    src/random.cpp \
+    src/collisionschecker.cpp \
+    src/collisionrectangle.cpp
 
 OTHER_FILES += \
     Game.qml \
@@ -33,7 +35,8 @@ OTHER_FILES += \
     main.js \
     airport/Airstrip.qml \
     airport/Airport2.qml \
-    info/Info.qml
+    info/Info.qml \
+    airport/BackgroundAirport.qml
 
 
 RESOURCES += \
@@ -42,4 +45,6 @@ RESOURCES += \
     scripts.qrc
 
 HEADERS += \
-    src/random.h
+    src/random.h \
+    src/collisionschecker.h \
+    src/collisionrectangle.h

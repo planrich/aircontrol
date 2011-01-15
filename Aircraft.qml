@@ -7,6 +7,12 @@ Image {
     source: {
         if (type == 0) {
             "small_aircraft"
+        } else if (type == 1) {
+            "big_aircraft"
+        } else if (type == 2) {
+            "zeppelin"
+        } else if (type == 3) {
+            "helicopter"
         }
     }
     smooth: true
@@ -15,10 +21,23 @@ Image {
     property bool crashed: false
     property bool landing: false
 
-    property real dragX: 0
-    property real dragY: 0
-
     property variant landingParams: null;
+
+    function checkCrash(plane) {
+        return Util.distance(plane.getCenterX(),plane.getCenterY(),x,y,width,height) < 55;
+    }
+
+    function crashDistance() {
+        if (type == 2) { return 55; }
+        else { return 25; }//default small_aircraft
+    }
+
+    function getSpeed() {
+        if (type == 1) { return 35; }
+        if (type == 2) { return 75; }
+        if (type == 3) { return 65; }
+        else { return 45; }//default small_aircraft
+    }
 
     function getCenterX() {
         return x + width / 2;

@@ -74,7 +74,7 @@ function updateFlightPath(deg)
 
     var fly_distance = Util.distance(aircraft.getCenterX(), aircraft.getCenterY(),tox,toy);
 
-    flyto(tox - aircraft.width / 2,toy - aircraft.height / 2,fly_distance * 35);
+    flyto(tox - aircraft.width / 2,toy - aircraft.height / 2,fly_distance * aircraft.getSpeed());
 }
 
 function flyto(tox,toy,duration) {
@@ -166,7 +166,7 @@ function headfor(checkpoint)
 
     var fly_distance = Util.distance(aircraft.getCenterX(), aircraft.getCenterY(),checkpoint.getCenterX(),checkpoint.getCenterY());
 
-    flyto(checkpoint.getCenterX() - aircraft.width / 2, checkpoint.getCenterY() - aircraft.height / 2,fly_distance * 35);
+    flyto(checkpoint.getCenterX() - aircraft.width / 2, checkpoint.getCenterY() - aircraft.height / 2,fly_distance * aircraft.getSpeed());
 }
 
 

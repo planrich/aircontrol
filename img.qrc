@@ -13,5 +13,8 @@
         <file alias="background1">img/background/background1.jpg</file>
         <file alias="airport2">img/airport/airport2.png</file>
         <file alias="info">img/info.png</file>
+        <file alias="zeppelin">img/aircraft/zeppelin.png</file>
+        <file alias="big_aircraft">img/aircraft/big_aircraft.png</file>
+        <file alias="helicopter">img/aircraft/helicopter.png</file>
     </qresource>
 </RCC>

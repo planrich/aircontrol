@@ -42,6 +42,10 @@ Image {
         id: rand
     }
 
+    CollisionsChecker {
+        id: collchecker
+    }
+
     Timer {
         id: crashchecker
         interval: 125

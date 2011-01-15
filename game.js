@@ -37,11 +37,11 @@ function createAirport() {
     }
 
     //create new airport
-    var airportBuilder = Qt.createComponent("Airport" + game.randomMinMax(1,2) + ".qml");
+    var airportBuilder = Qt.createComponent("BackgroundAirport.qml");
     airport = airportBuilder.createObject(airportLayer);
 
-    airport.x = game.randomMinMax(300,700);
-    airport.y = game.randomMinMax(50,150);
+    //airport.x = game.randomMinMax(300,700);
+    //airport.y = game.randomMinMax(50,150);
 }
 
 function pause() {
@@ -88,8 +88,10 @@ function createAircraft(type)
  */
 function spawn(chance)
 {
+     console.log("tick");
+
     if (game.random() < chance && planes.length < maxAircrafts) {
-        var plane = createAircraft(Math.floor(game.random() * 1)); //type 0 for now
+        var plane = createAircraft(2); //type 0 for now Math.floor(game.random() * 1)
         var obj = randomSpawnPoint(plane.width,plane.height);
 
         plane.x = obj[0];
@@ -285,7 +287,7 @@ function checkCollisions() {
                 continue;
             }
 
-            if (Util.distance(p1.getCenterX(),p1.getCenterY(),p2.getCenterX(),p2.getCenterY()) < 55) {
+            if (collchecker.collidate(p1.x,p1.y,p1.width,p1.height, p1.rotation,p2.x,p2.y,p2.width,p2.height, p2.rotation)) {
                 crash(p1,p2);
                 return;
             }

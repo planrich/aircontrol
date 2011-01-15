@@ -6,12 +6,14 @@
 #include <QDeclarativeContext>
 #include <QDeclarativeItem>
 #include "src/random.h"
+#include "src/collisionschecker.h"
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
     qmlRegisterType<Random>("com.planrich.aircontrol",1,0,"Random");
+    qmlRegisterType<CollisionsChecker>("com.planrich.aircontrol",1,0,"CollisionsChecker");
 
     QDeclarativeEngine engine;
     QDeclarativeComponent mainComponent(&engine,QUrl("qrc:/Main.qml"));
