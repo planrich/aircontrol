@@ -1,3 +1,6 @@
+require 'middleclass.init'
+require 'middleclass-extras.init'
+
 require 'aircraft.lua'
 
 function love.load()
@@ -7,10 +10,9 @@ function love.load()
     background = love.graphics.newImage("img/background/background1.jpg")
     playButton = love.graphics.newImage("img/play.png")
 
+    aircraft1 = Aircraft:new(1)
     planes = {}
-
-    planes[0] = Aircraft:new()
-    planes[0].img = love.graphics.newImage("img/aircraft/small_aircraft.png")
+    planes[0] = aircraft1;
 end
 
 function love.keypressed(key, unicode)
@@ -22,7 +24,7 @@ end
 function love.draw()
     love.graphics.draw(background,0,0)
     for i,v in pairs(planes) do
-        v.draw()
+        love.graphics.draw(v.img,0,0)
     end
 
 

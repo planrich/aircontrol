@@ -1,23 +1,14 @@
-Aircraft = {
-    type = 0,
-    x = 0,
-    y = 0,
-    width = 0,
-    height = 0,
-    radius = 0,
-    scale = 1,
-    img = nil,
 
-    checkpoints = {}
-}
 
-function Aircraft:new (o)
-    o = o or {}
-    setmetatable(o,self)
-    self.__index = self
-    return o
+Aircraft = class('Aircraft')
+function Aircraft:initialize(type)
+    self.img = love.graphics.newImage("img/aircraft/aircraft1.png")
+    self.rotation = 0
+    self.x = 0
+    self.y = 0
+    self.scaleX = 1
+    self.scaleY = 1
 end
 
-function Aircraft:draw ()
-    love.graphics.draw(self.img,self.x,self.y,self.rotation,self.scale,self.scale)
-end
+
+
