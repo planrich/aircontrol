@@ -1,41 +1,44 @@
 #include "collisionschecker.h"
-#include "src/geomfig.h"
+#include "src/polygon.h"
+#include "src/vector2d.h"
+#include <QList>
 
 CollisionsChecker::CollisionsChecker(QObject *parent) :
     QObject(parent)
 {
 }
 
-
 bool CollisionsChecker::collidate(float x, float y, float w, float h, float rot, float x1, float y1, float w1, float h1, float rot1) {
 
-    //check collision here
-    geomfig plane1;
-    plane1.angle = rot;
-    plane1.scale = 1;
-    plane1.prototype.push_back(new vec(-w / 2,-h / 2));
-    plane1.prototype.push_back(new vec(-w / 2, h / 2));
-    plane1.prototype.push_back(new vec(w / 2, h / 2));
-    plane1.prototype.push_back(new vec(w / 2, -h / 2));
-    plane1.pivot = vec(x,y);
-    plane1.apply();
+    QList<Vector2D> points;
+    points.append(Vector2D(0, 0));
+    points.append(Vector2D(w, 0));
+    points.append(Vector2D(w, h));
+    points.append(Vector2D(0, h));
 
-    geomfig plane2;
-    plane2.angle = rot1;
-    plane2.scale = 1;
-    plane2.prototype.push_back(new vec(-w1 / 2,-h1 / 2));
-    plane2.prototype.push_back(new vec(-w1 / 2, h1 / 2));
-    plane2.prototype.push_back(new vec(w1 / 2, h1 / 2));
-    plane2.prototype.push_back(new vec(w1 / 2, -h1 / 2));
-    plane2.pivot = vec(x1,y1);
-    plane2.apply();
+    Polygon * plane1 = new Polygon(points);
+    plane1->offset(plane1->_center.x(),plane1->_center.y());
+    plane1->translate(x,y);
+    plane1->rotate(rot);
 
-    for (int i = 0; i < plane1.outline.size(); ++i) {
-        for (int j = 0; j < plane2.outline.size(); ++j) {
-            if (collide(*plane1.outline[i],*plane1.outline[i + 1],*plane2.outline[j],*plane2.outline[j + 1]))
-                return true;
-        }
+    QList<Vector2D> points1;
+    points1.append(Vector2D(0,  0));
+    points1.append(Vector2D(w1, 0));
+    points1.append(Vector2D(w1, h1));
+    points1.append(Vector2D(0,  h1));
+
+    Polygon * plane2 = new Polygon(points1);
+    plane2->offset(plane2->_center.x(),plane2->_center.y());
+    plane2->translate(x1,y1);
+    plane2->rotate(rot1);
+
+    bool intersect = false;
+    if (plane1->intersect(*plane2) || plane2->intersect(*plane1)) {
+        intersect = true;
     }
 
-    return false;
+    delete plane1; plane1 = 0;
+    delete plane2; plane2 = 0;
+
+    return intersect;
 }

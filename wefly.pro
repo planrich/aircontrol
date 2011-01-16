@@ -17,7 +17,8 @@ INSTALLS=target
 
 SOURCES += main.cpp \
     src/random.cpp \
-    src/collisionschecker.cpp
+    src/collisionschecker.cpp \
+    src/polygon.cpp
 
 OTHER_FILES += \
     Game.qml \
@@ -46,4 +47,5 @@ RESOURCES += \
 HEADERS += \
     src/random.h \
     src/collisionschecker.h \
-    src/geomfig.h
+    src/polygon.h \
+    src/vector2d.h
