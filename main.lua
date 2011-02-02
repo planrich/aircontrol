@@ -1,38 +1,49 @@
-require 'middleclass.init'
-require 'middleclass-extras.init'
+require 'middleclass'
+HC = require 'hardoncollider'
 
-require 'aircraft.lua'
+dofile 'src/queue.lua'
+
+dofile 'src/drawable.lua'
+dofile 'src/aircraft.lua'
+
+dofile 'src/loader.lua'
+dofile 'src/timer.lua'
+
+dofile 'src/game.lua'
+
+
 
 function love.load()
     --init random seed
     math.randomseed(os.time())
-
-    background = love.graphics.newImage("img/background/background1.jpg")
-    playButton = love.graphics.newImage("img/play.png")
-
-    aircraft1 = Aircraft:new(1)
-    planes = {}
-    planes[0] = aircraft1;
+    game = Game:new()
 end
 
 function love.keypressed(key, unicode)
    if key == "escape" then
       love.event.push('q')
+   else
+	 
    end
 end
 
+function love.mousepressed( x, y, button )
+	game:mousepressed( x, y, button )
+end
+
+function love.mousereleased( x, y, button )
+	game:mousereleased( x, y, button )
+end
+
+function love.update(dt)
+    game:update(dt)
+end
+
 function love.draw()
-    love.graphics.draw(background,0,0)
-    for i,v in pairs(planes) do
-        love.graphics.draw(v.img,0,0)
-    end
-
-
-    love.graphics.draw(playButton,0,0)
-
-
+    game:draw()
 end
 
 function love.quit()
-  print("quiting")
+    game:quit()
 end
+
