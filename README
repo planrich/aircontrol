@@ -1,0 +1,9 @@
+
+
+-===================INSTALLING======================-
+
+To compile run this love game you need two projects imported hosted on github
+
+middleclass: https://github.com/kikito/middleclass
+hardoncollider: https://github.com/vrld/HardonCollider
+
