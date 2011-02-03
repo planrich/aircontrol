@@ -1,10 +1,12 @@
 require 'middleclass'
 HC = require 'hardoncollider'
 
+dofile 'src/util.lua'
 dofile 'src/queue.lua'
 
 dofile 'src/drawable.lua'
 dofile 'src/aircraft.lua'
+dofile 'src/checkpoint.lua'
 
 dofile 'src/loader.lua'
 dofile 'src/timer.lua'

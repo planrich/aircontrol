@@ -41,3 +41,9 @@ function List.popright (list)
   return value
 end
 
+function List.peekright (list)
+  local last = list.last
+  if list.first > last then return nil end
+  local value = list[last]
+  return value
+end

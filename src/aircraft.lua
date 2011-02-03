@@ -2,7 +2,7 @@
 Aircraft = class('Aircraft',Drawable)
 
 function Aircraft:initialize(type,x,y,angle)
-    super.initialize(self)
+    Drawable.initialize(self)
   
     self.checkpoints = List.new()
     self.speed = 35.0
@@ -13,7 +13,7 @@ function Aircraft:initialize(type,x,y,angle)
 end
 
 function Aircraft:update(dt)
-  super.update(self,dt)
+  Drawable.update(self,dt)
  
   local cp = List.peekleft(self.checkpoints)
   
@@ -28,6 +28,31 @@ function Aircraft:update(dt)
   end
 end
 
+function Aircraft:draw()
+  for k,v in pairs(self.checkpoints) do
+	--v:draw()
+  end
+    
+  Drawable.draw(self)
+end
+
 function Aircraft:drag(x,y)
+  local cp = List.peekright(self.checkpoints)
+  local cx = 0
+  local cy = 0
+  local mindist = 50
+  if cp == nil then
+	cx, cy = self.rect:center()
+  else
+	cx = cp.x + cp.w / 2
+	cy = cp.y + cp.h / 2
+	mindist = 30
+  end
   
+  if (distance(cx,cy,x,y) > mindist) then
+	  --create new cp
+	print("new CP")
+	  local newcp = Checkpoint:new(self,x,y,3,3)
+	  List.pushright(self.checkpoints,newcp)
+  end
 end
