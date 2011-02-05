@@ -9,9 +9,14 @@ function Checkpoint:initialize(parent,x,y,w,h)
 	self.y = y - h / 2
 	self.w = w
 	self.h = h
+    self.landingPoint = false
 end
 
 function Checkpoint:draw()
-	love.graphics.setColor({red=200,green=200,blue=200,alpha=0.5})
-	love.graphics.draw("fill",self.x,self.y,self.w,self.h)
+    Drawable.draw(self)
+    
+    if self.visible then
+        --love.graphics.setColor({red=200,green=200,blue=200,alpha=0.5})
+        love.graphics.rectangle("fill",self.x,self.y,self.w,self.h)
+    end
 end

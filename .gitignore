@@ -1,4 +1,5 @@
 wefly.pro.user
 wefly.spec
 middleclass/**
-hardoncollider/**
+HardonCollider/**
+middleclass-extras/**

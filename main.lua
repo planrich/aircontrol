@@ -1,19 +1,22 @@
 require 'middleclass'
-HC = require 'hardoncollider'
+require 'middleclass-extras'
+HC = require 'HardonCollider'
+
+gameWidth = 1366
+gameHeight = 768
 
 dofile 'src/util.lua'
 dofile 'src/queue.lua'
+dofile 'src/loader.lua'
+dofile 'src/timer.lua'
 
 dofile 'src/drawable.lua'
 dofile 'src/aircraft.lua'
 dofile 'src/checkpoint.lua'
 
-dofile 'src/loader.lua'
-dofile 'src/timer.lua'
+dofile 'src/interface/interface.lua'
 
 dofile 'src/game.lua'
-
-
 
 function love.load()
     --init random seed

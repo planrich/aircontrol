@@ -1,9 +1,9 @@
-Game = class('Game', StatefulObject)
+Game = class('Game')
 
 function Game:initialize()  
-  HC.init(100, collision_start, collision_persist, collision_stop)
+    HC.init(100, collision_start, collision_persist, collision_stop)
   
-	self.background = load("img/background/background1.jpg")
+    self.background = load("img/background/background1.jpg")
 
     self.objects = {}
     self.objectCount = 0
@@ -12,16 +12,14 @@ function Game:initialize()
     self.spawnChance = 0.3
     self.timer = Timer:new()
 
-	self.mouseCollision = nil
-	self.focus = nil
-	
+    self.mouseCollision = nil
+    self.focus = nil
+
     local plane = Aircraft:new(1,50,50,90 * math.pi / 180)
     self:addPlane(plane)
-	
-	local plane2 = Aircraft:new(1,500,50,270 * math.pi / 180)
+
+    local plane2 = Aircraft:new(1,500,50,270 * math.pi / 180)
     self:addPlane(plane2)
-	
-	
 end
 
 function Game:addPlane(p)
@@ -31,19 +29,19 @@ function Game:addPlane(p)
 end
 
 function Game:mousepressed( x, y, button )
-  print("down")
+  --print("down")
   self.mouseCollision = HC.addRectangle(x,y,1,1)   
 end
 
 function Game:mousereleased( x, y, button )
   if self.mouseCollision ~= nil then
-	HC.remove(self.mouseCollision)
+    HC.remove(self.mouseCollision)
   end
   
   if self.focus ~= nil then
-	print("stop dragging")
+    --print("stop dragging")
   end
-	
+
   self.focus = nil
 end
 
@@ -56,7 +54,6 @@ function Game:update(dt)
 	local y = love.mouse:getY()
 	
 	self.focus:drag(x,y)
-	
   end
   
   HC.update(dt)
@@ -67,7 +64,8 @@ function Game:update(dt)
 end
 
 function Game:draw()
-    love.graphics.draw(self.background,0,0)
+    love.graphics.draw(self.background,0,35)
+    
     for k,v in pairs(self.objects) do
         v:draw()
     end
@@ -76,7 +74,6 @@ end
 function Game:quit()
 
 end
-
 
 function spawn()
   if 1.0 <= 1.0 then
@@ -90,8 +87,8 @@ function randomSpawnPoint()
     local x = 0
     local y = 0
     local rot = 0
-    local windowWidth = 1366
-    local windowHeight = 768
+    local windowWidth = gameWidth
+    local windowHeight = gameHeight
     local h = 52
     local w = 52
 
@@ -130,7 +127,7 @@ function collision_start(dt, shape_a, shape_b, mtv_x, mtv_y)
 	else
 	  game.focus = game.objects[shape_a.index]
 	end
-	print("we got plane")
+	game.focus:clearCheckpoints()
 	HC.remove(game.mouseCollision)
 	game.mouseCollision = nil
   else

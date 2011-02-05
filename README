@@ -5,5 +5,6 @@
 To compile run this love game you need two projects imported hosted on github
 
 middleclass: https://github.com/kikito/middleclass
+middlecalss-extras: git://github.com/kikito/middleclass-extras.git
 hardoncollider: https://github.com/vrld/HardonCollider
 
