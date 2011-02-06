@@ -1,16 +1,20 @@
 
 Aircraft = class('Aircraft',Drawable)
 
-function Aircraft:initialize(typus,x,y,angle)
+function Aircraft:initialize(type,x,y,angle)
     Drawable.initialize(self)
 
     self.x = x
     self.y = y
+    self.type = type
     
     self.speed = 10.0
-    self.img = load("img/aircraft/aircraft".. typus ..".png")
+    self.img = load("img/aircraft/aircraft".. type ..".png")
     self.rect = HC.addRectangle(x,y,self.img:getWidth(),self.img:getHeight())
     self:rotateTo(angle)
+    
+    self.w = self.img:getWidth()
+    self.h = self.img:getHeight()
     
     self.checkpoints = List.new()
 end
@@ -55,6 +59,9 @@ function Aircraft:update(dt)
     local vy = -math.cos(self.angle)
     
     self.rect:move(vx * self.speed * dt ,vy * self.speed * dt)
+    local cx,cy = self.rect:center()
+    self.x = cx - self.w / 2
+    self.y = cy - self.h / 2
 end
 
 -- draw all checkpoints and draw in baseclass
@@ -65,6 +72,7 @@ function Aircraft:draw()
         end
    end
    
+   Drawable.draw(self)
    self.rect:draw("line")
 end
 

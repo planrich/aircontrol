@@ -10,6 +10,10 @@ function scalar(x1,y1,x2,y2)
   return x1*x2 + y1*y2
 end
 
+function isin(x,y,x1,y1,w1,h1)
+  return x >= x1 and y >= y1 and x < x1 + w1 and y < y1 + h1
+end
+
 function calcAngle(x1,y1,x2,y2)
     local len1 = math.sqrt(x1 * x1 + y1 * y1)
     local len2 = math.sqrt(x2 * x2 + y2 * y2)

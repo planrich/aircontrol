@@ -14,9 +14,14 @@ dofile 'src/drawable.lua'
 dofile 'src/aircraft.lua'
 dofile 'src/checkpoint.lua'
 
-dofile 'src/interface/interface.lua'
+dofile 'src/airport/airport.lua'
 
 dofile 'src/game.lua'
+
+dofile 'src/interface/button.lua'
+dofile 'src/interface/interface.lua'
+
+
 
 function love.load()
     --init random seed

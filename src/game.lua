@@ -3,10 +3,14 @@ Game = class('Game')
 function Game:initialize()  
     HC.init(100, collision_start, collision_persist, collision_stop)
   
+    self.interface = Interface:new()
     self.background = load("img/background/background1.jpg")
 
     self.objects = {}
+    self.airports = {}
+    self.airportCount = 0
     self.objectCount = 0
+    
     self.score = 0
     self.speed = 1.0
     self.spawnChance = 0.3
@@ -18,8 +22,23 @@ function Game:initialize()
     local plane = Aircraft:new(1,50,50,90 * math.pi / 180)
     self:addPlane(plane)
 
-    local plane2 = Aircraft:new(1,500,50,270 * math.pi / 180)
+    local plane2 = Aircraft:new(2,500,50,270 * math.pi / 180)
     self:addPlane(plane2)
+    
+    --init airports
+    self:addAirport(Airport:new(1,1200,312,45,45,270,0,0)) --small
+    self:addAirport(Airport:new(2,370,303,60,75,90,0,0)) --big
+    self:addAirport(Airport:new(3,659,100,70,90,0,-1,-1)) --z1
+    self:addAirport(Airport:new(3,1052,477,70,90,0,-1,-1)) --z2
+    self:addAirport(Airport:new(4,607,502,55,55,0,-1,-1)) --h1
+    self:addAirport(Airport:new(4,953,70,55,55,0,-1,-1)) --h2
+    
+end
+
+function Game:addAirport(airport)
+    airport.index = self.airportCount;
+    self.airports[self.airportCount] = airport
+    self.airportCount = self.airportCount + 1
 end
 
 function Game:addPlane(p)
@@ -34,26 +53,42 @@ function Game:mousepressed( x, y, button )
 end
 
 function Game:mousereleased( x, y, button )
-  if self.mouseCollision ~= nil then
-    HC.remove(self.mouseCollision)
-  end
-  
-  if self.focus ~= nil then
-    --print("stop dragging")
-  end
+    self.interface:mousereleased(x,y,button)
+    
+    if self.mouseCollision ~= nil then
+        HC.remove(self.mouseCollision)
+    end
+    
+    if self.focus ~= nil then
+        --print("stop dragging")
+    end
 
-  self.focus = nil
+    self.focus = nil
 end
 
-function Game:update(dt)  
+function Game:update(dt)
+    
+  self.interface:update(dt)  
+    
   self.timer:update()
   
   -- we have focus and well drag plane
   if self.focus then
 	local x = love.mouse:getX()
 	local y = love.mouse:getY()
-	
-	self.focus:drag(x,y)
+    local airport = nil
+    for k,v in pairs(self.airports) do
+       if v:canLand(self.focus.type,x,y) then
+          airport = v 
+       end
+    end
+    
+    if airport ~= nil then
+        self.focus = nil
+        game.score = game.score + 1
+    else
+        self.focus:drag(x,y)
+    end
   end
   
   HC.update(dt)
@@ -66,9 +101,15 @@ end
 function Game:draw()
     love.graphics.draw(self.background,0,35)
     
+    for k,v in pairs(self.airports) do
+       v:draw() 
+    end
+    
     for k,v in pairs(self.objects) do
         v:draw()
     end
+    
+    self.interface:draw()
 end
 
 function Game:quit()
@@ -152,3 +193,26 @@ function collision_stop(dt, shape_a, shape_b)
 
 end
 
+function onPlay()
+    print("play")
+end
+
+function onSpeed()
+    game.speed = (game.speed % 2) + 1
+end
+
+function onSettings()
+    print("settings")
+end
+
+function onScores()
+    print("scores")
+end
+
+function onInfo()
+    print("info")
+end
+
+function onQuit()
+    love.event.push('q')
+end

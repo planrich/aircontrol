@@ -15,8 +15,8 @@ end
 
 function Drawable:draw()   
     if self.visible then
-        if self.img then
-            love.graphics.draw(self.img,self.x - self.w / 2, self.y - self.h / 2, self.angle, self.scale, self.scale, self.w, self.h)
+        if self.img ~= nil then
+            love.graphics.draw(self.img,self.x + self.w / 2, self.y + self.h / 2, self.angle, self.scale, self.scale, self.w / 2, self.h / 2)
         end
     end
 end
