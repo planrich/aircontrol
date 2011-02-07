@@ -7,38 +7,33 @@ function Game:initialize()
     self.background = load("img/background/background1.jpg")
 
     self.objects = {}
-    self.airports = {}
-    self.airportCount = 0
+    self.airstrips = {}
+    self.airstripCount = 0
     self.objectCount = 0
     
     self.score = 0
     self.speed = 1.0
     self.spawnChance = 0.3
     self.timer = Timer:new()
+    self.timer:add(TimerEvent:new(spawn,3000,-1))
 
     self.mouseCollision = nil
     self.focus = nil
-
-    local plane = Aircraft:new(1,50,50,90 * math.pi / 180)
-    self:addPlane(plane)
-
-    local plane2 = Aircraft:new(2,500,50,270 * math.pi / 180)
-    self:addPlane(plane2)
     
-    --init airports
-    self:addAirport(Airport:new(1,1200,312,45,45,270,0,0)) --small
-    self:addAirport(Airport:new(2,370,303,60,75,90,0,0)) --big
-    self:addAirport(Airport:new(3,659,100,70,90,0,-1,-1)) --z1
-    self:addAirport(Airport:new(3,1052,477,70,90,0,-1,-1)) --z2
-    self:addAirport(Airport:new(4,607,502,55,55,0,-1,-1)) --h1
-    self:addAirport(Airport:new(4,953,70,55,55,0,-1,-1)) --h2
+    --init airstrips
+    self:addAirstrip(Airstrip:new(1,1200,312,45,45,270,0,0)) --small
+    self:addAirstrip(Airstrip:new(2,370,303,60,75,90,0,0)) --big
+    self:addAirstrip(Airstrip:new(3,659,100,70,90,0,-1,-1)) --z1
+    self:addAirstrip(Airstrip:new(3,1052,477,70,90,0,-1,-1)) --z2
+    self:addAirstrip(Airstrip:new(4,607,502,55,55,0,-1,-1)) --h1
+    self:addAirstrip(Airstrip:new(4,953,70,55,55,0,-1,-1)) --h2
     
 end
 
-function Game:addAirport(airport)
-    airport.index = self.airportCount;
-    self.airports[self.airportCount] = airport
-    self.airportCount = self.airportCount + 1
+function Game:addAirstrip(airstrip)
+    airstrip.index = self.airstripCount;
+    self.airstrips[self.airstripCount] = airstrip
+    self.airstripCount = self.airstripCount + 1
 end
 
 function Game:addPlane(p)
@@ -76,16 +71,16 @@ function Game:update(dt)
   if self.focus then
 	local x = love.mouse:getX()
 	local y = love.mouse:getY()
-    local airport = nil
-    for k,v in pairs(self.airports) do
+    local airstrip = nil
+    for k,v in pairs(self.airstrips) do
        if v:canLand(self.focus.type,x,y) then
-          airport = v 
+          airstrip = v 
        end
     end
     
-    if airport ~= nil then
+    if airstrip ~= nil then
+        self.focus:land(airstrip)
         self.focus = nil
-        game.score = game.score + 1
     else
         self.focus:drag(x,y)
     end
@@ -101,7 +96,7 @@ end
 function Game:draw()
     love.graphics.draw(self.background,0,35)
     
-    for k,v in pairs(self.airports) do
+    for k,v in pairs(self.airstrips) do
        v:draw() 
     end
     
@@ -119,7 +114,7 @@ end
 function spawn()
   if 1.0 <= 1.0 then
     local x,y,angle = randomSpawnPoint()
-    local plane = Aircraft:new(1)   
+    local plane = Aircraft:new(math.random(1,3),x,y,angle)   
     game:addPlane(plane)
   end
 end
@@ -191,6 +186,13 @@ end
 -- this is called when two shapes stop colliding
 function collision_stop(dt, shape_a, shape_b)
 
+end
+
+function Game:landed(plane)
+   game.objects[plane.rect.index] = nil
+   HC.remove(plane.rect)
+   
+   self.score = self.score + 1 
 end
 
 function onPlay()

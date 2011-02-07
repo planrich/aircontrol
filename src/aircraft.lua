@@ -8,7 +8,7 @@ function Aircraft:initialize(type,x,y,angle)
     self.y = y
     self.type = type
     
-    self.speed = 10.0
+    self.speed = 30
     self.img = load("img/aircraft/aircraft".. type ..".png")
     self.rect = HC.addRectangle(x,y,self.img:getWidth(),self.img:getHeight())
     self:rotateTo(angle)
@@ -49,8 +49,12 @@ function Aircraft:update(dt)
             self:rotateTo(angle);
         end
 
-        if distance(cp.x,cp.y,cx,cy) < 5 then
-            List.popleft(self.checkpoints) 
+        if distance(cp.x,cp.y,cx,cy) < 1 then
+            List.popleft(self.checkpoints)
+            
+            if cp.landingPoint then
+               game:landed(self) 
+            end
         end
     end
 
@@ -58,7 +62,7 @@ function Aircraft:update(dt)
     local vx = math.sin(self.angle)
     local vy = -math.cos(self.angle)
     
-    self.rect:move(vx * self.speed * dt ,vy * self.speed * dt)
+    self.rect:move(vx * (self.speed * game.speed) * dt ,vy * (self.speed * game.speed) * dt)
     local cx,cy = self.rect:center()
     self.x = cx - self.w / 2
     self.y = cy - self.h / 2
@@ -74,6 +78,13 @@ function Aircraft:draw()
    
    Drawable.draw(self)
    self.rect:draw("line")
+end
+
+function Aircraft:land(airstrip)
+    local x,y = airstrip:center()
+    local newcp = Checkpoint:new(self,x,y,3,3)
+    newcp.landingPoint = true
+    List.pushright(self.checkpoints,newcp)
 end
 
 --the plane has been clicked and wants to be dragged along this line

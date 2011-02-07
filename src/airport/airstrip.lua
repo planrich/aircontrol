@@ -1,6 +1,6 @@
 
 
-Airstrip = class('airstrip.Airstrip',Drawable)
+Airstrip = class('airport.Airstrip',Drawable)
 
 function Airstrip:initialize(type,x,y,w,h,landrotation,endx,endy)
     self.type = type

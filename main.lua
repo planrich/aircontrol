@@ -14,7 +14,7 @@ dofile 'src/drawable.lua'
 dofile 'src/aircraft.lua'
 dofile 'src/checkpoint.lua'
 
-dofile 'src/airport/airport.lua'
+dofile 'src/airport/airstrip.lua'
 
 dofile 'src/game.lua'
 
