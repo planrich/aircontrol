@@ -4,7 +4,7 @@ function Game:initialize()
     HC.init(100, collision_start, collision_persist, collision_stop)
   
     self.interface = Interface:new()
-    self.background = load("img/background/background1.jpg")
+    self.background = load("img/background/background1.png")
 
     self.objects = {}
     self.airstrips = {}
