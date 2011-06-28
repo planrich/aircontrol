@@ -1,4 +1,5 @@
 var checkpointBuilder = Qt.createComponent("Checkpoint.qml");
+var explosionBuilder = Qt.createComponent("Explosion.qml");
 var checkpoints = new Array();
 var checkpoint = null;
 
@@ -22,6 +23,23 @@ function createCheckpoint(x,y) {
     cp.y = y;
 
     return cp;
+}
+
+function explode() {
+
+    if (explosionBuilder.status != Component.Ready) {
+        console.log("error loading explosion component");
+        console.log(explosionBuilder.errorString());
+        return;
+    }
+
+    aircraft.destroy();
+
+    var e = explosionBuilder.createObject(planeLayer);
+    e.x = aircraft.x - e.width / 2;
+    e.y = aircraft.y - e.height / 2;
+
+    e.destroy(1600);
 }
 
 function updateControl(x,y) {

@@ -1,36 +1,53 @@
 import Qt 4.7
+import Box2D 1.0
 import "aircraft.js" as Logic
 import "util.js" as Util
 
-Image {
-    id: aircraft
-    source: {
-        if (type == 0) {
-            "small_aircraft"
-        } else if (type == 1) {
-            "big_aircraft"
-        } else if (type == 2) {
-            "zeppelin"
-        } else if (type == 3) {
-            "helicopter"
+Body {
+    id: aircraft;
+    sleepingAllowed: false;
+    width: img.width;
+    height: img.height;
+
+    property int type: 0;
+    property bool crashed: false;
+    property bool landing: false;
+
+    fixtures: Box {
+        anchors.fill: parent
+        density: 1;
+        friction: 0.3;
+        restitution: 0.5;
+
+        onBeginContact: {
+            Logic.explode()
         }
-    }
-    smooth: true
 
-    property int type: 0
-    property bool crashed: false
-    property bool landing: false
 
-    property variant landingParams: null;
-
-    function checkCrash(plane) {
-        return Util.distance(plane.getCenterX(),plane.getCenterY(),x,y,width,height) < 55;
     }
 
-    function crashDistance() {
-        if (type == 2) { return 55; }
-        else { return 25; }//default small_aircraft
+
+
+    Image {
+        id: img
+        source: {
+            if (parent.type == 0) {
+                "small_aircraft"
+            } else if (parent.type == 1) {
+                "big_aircraft"
+            } else if (parent.type == 2) {
+                "zeppelin"
+            } else if (parent.type == 3) {
+                "helicopter"
+            }
+        }
+
+
     }
+
+
+
+
 
     function getSpeed() {
         if (type == 1) { return 35; }
@@ -122,7 +139,6 @@ Image {
              StateChangeScript {
                  script: {
                      Logic.clearCheckpoints();
-                     aircraft.destroy(100);
                  }
              }
          },
@@ -150,5 +166,4 @@ Image {
              }
          }
      ]
-
 }

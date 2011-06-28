@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ttapp xmlns="http://www.tiitoo.com/SDK/v1">
-    <version>1.0.0</version>
+    <version>0.1.0</version>
 
     <name>Aircontrol</name>
     <displayName lang="DE">Luftkontrolle</displayName>
