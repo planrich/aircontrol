@@ -1,4 +1,4 @@
-//var aircraftBuilder = Qt.createComponent("Aircraft.qml");
+var aircraftBuilder = Qt.createComponent("Aircraft.qml");
 var explosionBuilder = Qt.createComponent("Explosion.qml");
 
 var planes = new Array();
@@ -19,13 +19,16 @@ function newGame() {
 
     var len = planes.length;
     while (len > 0) {
-        //var plane = planes.pop();
-        //plane.clearCheckpoints();
-        //plane.destroy();
+        var plane = planes.pop();
+        plane.clearCheckpoints();
+        plane.destroy();
         len = len - 1;
     }
 
+    crashchecker.start();
     spawner.start();
+
+    spawn(1);
 }
 
 function createAirport() {
@@ -36,25 +39,25 @@ function createAirport() {
     }
 
     //create new airport
-    var airportBuilder = Qt.createComponent("BackgroundAirport.qml");
+    var airportBuilder = Qt.createComponent("Airport" + game.randomMinMax(1,2) + ".qml");
     airport = airportBuilder.createObject(airportLayer);
 
-    //airport.x = game.randomMinMax(300,700);
-    //airport.y = game.randomMinMax(50,150);
+    airport.x = game.randomMinMax(300,700);
+    airport.y = game.randomMinMax(50,150);
 }
 
 function pause() {
-    //for (var i = 0; i < planes.length; i++) {
-    //    planes[i].pause();
-    //}
+    for (var i = 0; i < planes.length; i++) {
+        planes[i].pause();
+    }
 
     spawner.stop();
 }
 
 function resume() {
-    //for (var i = 0; i < planes.length; i++) {
-    //    planes[i].resume();
-    //}
+    for (var i = 0; i < planes.length; i++) {
+        planes[i].resume();
+    }
 
     spawner.start();
 }
@@ -64,8 +67,8 @@ function resume() {
  */
 function createAircraft(type)
 {
-   if(aircraftComponent.status == Component.Ready){
-         var plane = aircraftComponent.createObject(world);
+    if(aircraftBuilder.status == Component.Ready){
+         var plane = aircraftBuilder.createObject(planeLayer);
          if(plane == null){
              console.log("error creating aircraft");
              console.log(component.errorString());
@@ -77,25 +80,9 @@ function createAircraft(type)
 
      } else {
          console.log("error loading aircraft component");
-         console.log(aircraftComponent.errorString());
+         console.log(aircraftBuilder.errorString());
          return null;
      }
-}
-
-function test() {
-    var plane = createAircraft(0);
-
-    plane.x = 50;
-    plane.y = 50;
-    //plane.rotate(rot);
-    //plane.updateFlightPath(rot);
-
-    var plane1 = createAircraft(0);
-
-    plane1.x = 500;
-    plane1.y = 50;
-    //plane1.rotate(rot);
-    //plane1.updateFlightPath(rot);
 }
 
 /**
@@ -103,8 +90,13 @@ function test() {
  */
 function spawn(chance)
 {
-    if (rand.random() < chance && planes.length < maxAircrafts || true == true) {
-        var plane = createAircraft(0);
+    console.debug('spawntick')
+    if (planes.length == 0) {
+        chance = 1;
+    }
+
+    if (game.random() < chance && planes.length < maxAircrafts) {
+        var plane = createAircraft(Math.floor(game.random() * 1)); //type 0 for now
         var obj = randomSpawnPoint(plane.width,plane.height);
 
         plane.x = obj[0];
@@ -114,12 +106,14 @@ function spawn(chance)
     }
 
     if (game.random() < 0.10) {
-        game.spawnIntervalMod += 10;
-        game.spawnIntervalMod = Math.max(game.spawnInterval, 750);
+        console.debug('speed changed')
+        //game.spawnIntervalMod += 10;
+        //game.spawnIntervalMod = Math.max(game.spawnInterval, 750);
     }
 
     if (game.random() < 0.05) {
         game.spawnChance += 0.02;
+        console.debug('chance chaned')
         game.spawnChance = Math.min(game.spawnChance, 0.5);
     }
 
@@ -137,6 +131,25 @@ function spawnat(x,y) {
     var plane = createAircraft(type);
     plane.x = x;
     plane.y = y;
+}
+
+/**
+ * Let two planes crash and animate an explosion on each
+ */
+function crash(plane1,plane2) {
+
+    window.inGame = false; //indicate to start a new game if we press play
+    spawner.stop();
+
+    explode(plane1.x + plane1.width / 2, plane1.y + plane1.height / 2);
+    explode(plane2.x + plane2.width / 2, plane2.y + plane2.height / 2);
+
+    removePlane(plane1); plane1.crashed = true;
+    removePlane(plane2); plane2.crashed = true;
+
+    for (var i = 0; i < planes.length; i++) {
+        planes[i].stop();
+    }
 }
 
 /**
@@ -160,11 +173,29 @@ function removePlane(plane) {
 }
 
 /**
+ * Animates an explosion at the given params
+ */
+function explode(centerx,centery) {
+
+    if (explosionBuilder.status != Component.Ready) {
+        console.log("error loading explosion component");
+        console.log(explosionBuilder.errorString());
+        return;
+    }
+
+    var e = explosionBuilder.createObject(planeLayer);
+    e.x = centerx - e.width / 2;
+    e.y = centery - e.height / 2;
+
+    e.destroy(1600);
+}
+
+/**
  * Generates a random spawnpoint
  */
 function randomSpawnPoint(w,h)
 {
-    var side = Math.floor(rand.random() * 4); //0 top 1 right 2 bottom 3 left
+    var side = Math.floor(game.random() * 4); //0 top 1 right 2 bottom 3 left
 
     var x = 0;
     var y = 0;
@@ -176,7 +207,7 @@ function randomSpawnPoint(w,h)
         rot = game.randomMinMax(180 - 45, 180 + 45);
     }
     else if (side == 1) {
-        y = Math.round(25 + rand.random() * (window.height + 50));
+        y = Math.round(25 + game.random() * (window.height + 50));
         x = window.width;
         rot = game.randomMinMax(270 - 45, 270 + 45);
     }
@@ -193,12 +224,12 @@ function randomSpawnPoint(w,h)
 
     rot = rot % 360;
 
-    /*for (var i = 0; i < planes.length; ++i) {
+    for (var i = 0; i < planes.length; ++i) {
         var plane = planes[i];
         if (Util.distance(x + w / 2, y + h / 2, plane.getCenterX(), plane.getCenterY()) < 200){
             return randomSpawnPoint(w,h);
         }
-    }*/
+    }
 
     return [x,y,rot];
 }
@@ -237,6 +268,38 @@ function updateControl(x,y)
 {
     if (controlled != null)
         controlled.updateControl(x,y);
+}
+
+
+/**
+ * Checks plane collisions
+ */
+function checkCollisions() {
+    var len = planes.length;
+    for (var i = 0; i < len; i++) {
+        var p1 = planes[i];
+        if (p1.landing) {
+            continue;
+        }
+
+        for (var j = 0; j < len; j++) {
+            //dont check self
+            if (j == i) {
+                continue;
+            }
+
+            var p2 = planes[j];
+
+            if (p2.landing) {
+                continue;
+            }
+
+            if (Util.distance(p1.getCenterX(),p1.getCenterY(),p2.getCenterX(),p2.getCenterY()) < 55) {
+                crash(p1,p2);
+                return;
+            }
+        }
+    }
 }
 
 function canLand(type,x,y) {

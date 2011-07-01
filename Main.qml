@@ -1,5 +1,4 @@
 import Qt 4.7
-import Box2D 1.0
 import "main.js" as Logic
 
 Rectangle {
@@ -58,24 +57,6 @@ Rectangle {
             }
         }
 
-        /*Item {
-            id: settings
-            anchors.left: playpause.right
-            anchors.top: toolbar.top
-            width: 35
-            height: 35
-            Image {
-                anchors.centerIn: parent
-                source: "settings"
-                opacity: 0.2
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {} //not yet
-            }
-        }*/
-
         Item {
             id: speed
             anchors.left: playpause.right
@@ -100,7 +81,7 @@ Rectangle {
                             speedimg.source = "speed";
                         }
 
-                        world.speedChanged();
+                        game.speedChanged();
                     }
                 }
             }
@@ -123,6 +104,8 @@ Rectangle {
                 onClicked: {} //not yet
             }
         }
+
+
 
         Item {
             id: infoButton
@@ -179,7 +162,7 @@ Rectangle {
     }
 
     Game {
-        id: world
+        id: game
         anchors.top: toolbar.bottom
         anchors.bottom: parent.bottom
         anchors.left: parent.left
@@ -207,10 +190,10 @@ Rectangle {
             StateChangeScript {
                 script: {
                     if (inGame) {
-                        world.resume();
+                        game.resume();
                     } else {
                         inGame = true;
-                        world.newGame();
+                        game.newGame();
                     }
                 }
             }
@@ -223,7 +206,7 @@ Rectangle {
             name: "pause"; when: inGame == false
             StateChangeScript {
                 script: {
-                    world.pause();
+                    game.pause();
                 }
             }
         }

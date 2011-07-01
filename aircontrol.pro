@@ -7,13 +7,19 @@
 QT += core gui declarative opengl
 
 TARGET = aircontrol
+target.path = /usr/bin
 CONFIG += console
 CONFIG -= app_bundle
 
 TEMPLATE = app
-target.path=/usr/local/bin
-INSTALLS=target
 
+desktop.files += aircontrol.desktop
+desktop.path = /usr/share/applications
+
+icon.files += img/aircontrol.png
+icon.path = /usr/share/icons/hicolor/192x192/apps
+
+INSTALLS += target desktop icon
 
 SOURCES += main.cpp \
     src/random.cpp
@@ -33,8 +39,7 @@ OTHER_FILES += \
     main.js \
     airport/Airstrip.qml \
     airport/Airport2.qml \
-    info/Info.qml \
-    airport/BackgroundAirport.qml
+    info/Info.qml
 
 
 RESOURCES += \
@@ -43,8 +48,4 @@ RESOURCES += \
     scripts.qrc
 
 HEADERS += \
-    src/random.h \
-    src/collisionschecker.h \
-    src/polygon.h \
-    src/vector2d.h \
-    src/collisionobject.h
+    src/random.h
